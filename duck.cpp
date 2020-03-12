@@ -11,7 +11,8 @@ Duck::Duck(QColor color, QString playerName)
     m_scanHoek = 20;
     m_scanRichting = 0;
     m_boundingRect = QRectF(-30,-30,60,70);
-    //m_scan = new Scan(0,20,this);
+    m_scan = new Scan(0,20,this);
+    m_scan->setZValue(-1);
 }
 
 QRectF Duck::boundingRect() const
@@ -161,18 +162,18 @@ uint16_t Duck::health()
 
 uint16_t Duck::scan(uint16_t richting, uint16_t hoek)
 {
-    m_scanActive = 15; // aantal refresh.
-    while(richting > 360){
-        richting = richting - 360;
-    }
-    m_scanRichting = richting;
-    if(hoek > 20){
-        hoek = 20;
-    }
-    m_scanHoek = hoek;
-    prepareGeometryChange();
-    update();
-    return 0;
+//    m_scanActive = 15; // aantal refresh.
+//    while(richting > 360){
+//        richting = richting - 360;
+//    }
+//    m_scanRichting = richting;
+//    if(hoek > 20){
+//        hoek = 20;
+//    }
+//    m_scanHoek = hoek;
+//    prepareGeometryChange();
+//    update();
+    return m_scan->scan(richting, hoek);
 }
 
 void Duck::advance(int step)

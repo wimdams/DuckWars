@@ -63,7 +63,10 @@ void MainWindow::on_Health_valueChanged(int value)
 
 void MainWindow::on_pushButton_clicked()
 {
-    m_ducks.last()->scan(ui->scanOrient->value(),ui->scanHoek->value());
+    uint16_t afstand = m_ducks.last()->scan(ui->scanAngle->value(),ui->scanWidth->value());
+    ui->shootAngle->setValue(ui->scanAngle->value());
+    ui->shootDist->setValue(afstand);
+
 //    Scan *s =  new Scan(ui->scanOrient->value(),ui->scanHoek->value());
 //    m_pond.addItem(s);
 //    QList<QGraphicsItem *> items = s->collidingItems();
