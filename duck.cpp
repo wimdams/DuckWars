@@ -11,7 +11,7 @@ Duck::Duck(QColor color, QString playerName)
     m_scanHoek = 20;
     m_scanRichting = 0;
     m_boundingRect = QRectF(-30,-30,60,70);
-    m_scan = new Scan(0,20,this);
+    //m_scan = new Scan(0,20,this);
 }
 
 QRectF Duck::boundingRect() const
@@ -38,7 +38,7 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
     //Draw bounding rect in test mode:
         p->setPen(Qt::red);
         p->setBrush(Qt::NoBrush);
-        p->drawRect(boundingRect());
+        //p->drawRect(boundingRect());
 
     //Health bar
     p->setPen(Qt::NoPen);
