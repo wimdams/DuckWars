@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include "duck.h"
 #include "scan.h"
+#include "bullet.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,6 +28,8 @@ private slots:
     void on_Health_valueChanged(int value);
 
     void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::MainWindow *ui;

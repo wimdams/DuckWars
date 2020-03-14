@@ -3,6 +3,7 @@
 
 #include <QGraphicsItem>
 #include "scan.h"
+#include "bullet.h"
 #include <QtWidgets>
 #define QD qDebug() << __FILE__ << __LINE__
 
@@ -24,7 +25,9 @@ public:
     uint16_t speed();
     void setHealth(uint16_t health);
     uint16_t health();
+    void hit();
     uint16_t scan(uint16_t richting, uint16_t hoek);
+    void shoot(uint16_t angle, uint16_t distance);
 
 protected:
     void advance(int step) override;
@@ -39,6 +42,7 @@ private:
     uint16_t m_scanHoek;
     QRectF m_boundingRect;
     Scan * m_scan;
+    Bullet * m_bullet;
 };
 
 #endif // DUCK_H

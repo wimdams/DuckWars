@@ -7,6 +7,7 @@ Scan::Scan(int16_t angle = 0, int16_t width = 20, QGraphicsItem * parent = nullp
     m_scanAngle=angle;
     m_scanWidth=width;
     this->setZValue(-1); //dit lijkt niet te werken -> parent?
+    m_visible = 0;
 }
 
 QRectF Scan::boundingRect() const
@@ -54,8 +55,8 @@ QVector<QPointF> Scan::calculateScanBeam(void) const {
 
     QVector<QPointF> points;
     points << QPointF(20.0+0.0, 0.0)
-            << QPointF(20.0+100.0, qTan(qDegreesToRadians(m_scanWidth/2.0))*100)
-            << QPointF(20.0+100.0, -(qTan(qDegreesToRadians(m_scanWidth/2.0))*100))
+            << QPointF(20.0+200.0, qTan(qDegreesToRadians(m_scanWidth/2.0))*200)
+            << QPointF(20.0+200.0, -(qTan(qDegreesToRadians(m_scanWidth/2.0))*200))
     ;
     return points;
 }
@@ -64,22 +65,22 @@ void Scan::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
 {
     (void) option;
     (void) widget;
+    if(m_visible){
+        //Draw bounding rect in test mode:
+        p->setPen(Qt::red);
+        p->setBrush(Qt::NoBrush);
+        //p->drawRect(boundingRect());
 
-    //Draw bounding rect in test mode:
-    p->setPen(Qt::red);
-    p->setBrush(Qt::NoBrush);
-    p->drawRect(boundingRect());
-
-    //draw scan lines
-    QLinearGradient scanGrad(QPointF(0, 0), QPointF(100, 0));
-    scanGrad.setColorAt(0, QColor(255,255,255,200));
-    scanGrad.setColorAt(1, QColor(255,255,255,24));
-    QBrush b1(scanGrad);
-    p->setBrush(b1);
-    p->setPen(Qt::NoPen);
-    QPolygonF driehoek(calculateScanBeam());
-    p->drawPolygon(driehoek);
-
+        //draw scan lines
+        QLinearGradient scanGrad(QPointF(0, 0), QPointF(100, 0));
+        scanGrad.setColorAt(0, QColor(255,255,255,200));
+        scanGrad.setColorAt(1, QColor(255,255,255,24));
+        QBrush b1(scanGrad);
+        p->setBrush(b1);
+        p->setPen(Qt::NoPen);
+        QPolygonF driehoek(calculateScanBeam());
+        p->drawPolygon(driehoek);
+    }
 }
 
 uint16_t Scan::scan(uint16_t angle, uint16_t width)
@@ -88,16 +89,16 @@ uint16_t Scan::scan(uint16_t angle, uint16_t width)
     if(m_scanWidth != width){
         m_scanWidth=width;
         prepareGeometryChange();
-        update();
     }
-
     setRotation(m_scanAngle);
+    update();
+    m_visible = 10;
 
     QList<QGraphicsItem *> items = collidingItems();
     QD << items;
     QPointF pos = mapToScene(this->pos());
     QD << pos << this->pos();
-    uint32_t afstand = 100;
+    uint32_t afstand = 200;
     foreach (QGraphicsItem* whoami, items) {
         Duck * duck = qgraphicsitem_cast<Duck *>(whoami);
         if(duck){
@@ -126,4 +127,7 @@ void Scan::advance(int step)
         return;
 
     //TODO: beam laten faden
+    if(m_visible == 1) update();
+    if(m_visible > 0) m_visible--;
+
 }

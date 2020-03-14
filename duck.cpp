@@ -13,20 +13,18 @@ Duck::Duck(QColor color, QString playerName)
     m_boundingRect = QRectF(-30,-30,60,70);
     m_scan = new Scan(0,20,this);
     m_scan->setZValue(-1);
+    m_bullet = new Bullet(0,200,m_color);
 }
 
 QRectF Duck::boundingRect() const
 {
-
-    //return QRectF(-130,-130,260,270);
-
-    return m_boundingRect; // default: QRectF(-30,-30,60,70);
+    return m_boundingRect;
 }
 
 QPainterPath Duck::shape() const
 {
     QPainterPath path;
-    //enkel ellipse van de boddy (sorry geen headshots)
+    //enkel ellipse van de body (sorry geen headshots)
     path.addEllipse(-20,-20,40,40);
     return path;
 }
@@ -37,9 +35,9 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
     (void) widget;
 
     //Draw bounding rect in test mode:
-        p->setPen(Qt::red);
-        p->setBrush(Qt::NoBrush);
-        //p->drawRect(boundingRect());
+    //p->setPen(Qt::red);
+    //p->setBrush(Qt::NoBrush);
+    //p->drawRect(boundingRect());
 
     //Health bar
     p->setPen(Qt::NoPen);
@@ -52,25 +50,6 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
     p->setPen(Qt::white);
     p->drawText(0,25+10,m_playerName);
 
-    //draw scan lines
-//    if(m_scanActive){
-//        p->save();
-//        p->rotate(m_scanRichting);
-//        p->translate(20,0);
-//        QLinearGradient scanGrad(QPointF(0, 0), QPointF(100, 0));
-//        scanGrad.setColorAt(0, QColor(255,255,255,200));
-//        scanGrad.setColorAt(1, QColor(255,255,255,24));
-//        QBrush b1(scanGrad);
-//        p->setBrush(b1);
-//        p->setPen(Qt::NoPen);
-//        QPointF points[3] = {
-//            QPointF(0.0, 0.0),
-//            QPointF(100.0, qTan(qDegreesToRadians(m_scanHoek/2.0))*100),
-//            QPointF(100.0, -(qTan(qDegreesToRadians(m_scanHoek/2.0))*100)),
-//        };
-//        p->drawPolygon(points,3);
-//        p->restore();
-//    }
     //Gradient for body
     QLinearGradient bodyGrad(QPointF(0, 0), QPointF(30, 30));
     bodyGrad.setColorAt(0, m_color);
@@ -97,7 +76,6 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
     p->setBrush(Qt::black);
     p->drawChord(-12, -6, 6, 5, -45 * 16, 135 * 16);
     p->drawChord(-12, 2, 6, 5, 45 * 16, -135 * 16);
-
     //Draw beak
     p->setBrush(QColor(255,113,0));
     pen.setWidth(1);
@@ -108,9 +86,9 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
     p->restore();
 
 
-
-    //p->drawLine(0,0,0,20);
-    //p->drawLine(0,0,20,0);
+//    p->setPen(Qt::darkRed);
+//    p->drawLine(0,0,0,75);
+//    p->drawLine(0,0,75,0);
 }
 
 int Duck::type() const
@@ -160,20 +138,24 @@ uint16_t Duck::health()
     return m_health;
 }
 
+void Duck::hit()
+{
+    if(health()!=0) {
+        setHealth(health()-1);
+    }
+}
+
 uint16_t Duck::scan(uint16_t richting, uint16_t hoek)
 {
-//    m_scanActive = 15; // aantal refresh.
-//    while(richting > 360){
-//        richting = richting - 360;
-//    }
-//    m_scanRichting = richting;
-//    if(hoek > 20){
-//        hoek = 20;
-//    }
-//    m_scanHoek = hoek;
-//    prepareGeometryChange();
-//    update();
     return m_scan->scan(richting, hoek);
+}
+
+void Duck::shoot(uint16_t angle, uint16_t distance)
+{
+    if(!m_bullet->scene()){
+        this->scene()->addItem(m_bullet);
+    }
+    m_bullet->shoot(scenePos(), angle, distance);
 }
 
 void Duck::advance(int step)
@@ -184,15 +166,4 @@ void Duck::advance(int step)
     //berekenen naar waar we moeten bewegen en de stap zetten
     qreal angleInRad = qDegreesToRadians((qreal)m_angle);
     setPos(mapToParent(qCos(angleInRad)*(m_speed/10), qSin(angleInRad)*(m_speed/10)));
-    //Als we een scan straal moeten laten zien moet de bounding box aangepast worden.
-    if(m_scanActive){
-        m_scanActive--;
-        m_boundingRect = QRectF(-130,-130,260,270);
-        update();
-    }
-    //scan straal gedaan. box terug kleiner.
-    if(!m_scanActive && m_boundingRect.x() == -130){
-        prepareGeometryChange();
-        m_boundingRect = QRectF(-30,-30,60,70);
-    }
 }

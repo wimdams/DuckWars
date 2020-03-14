@@ -24,6 +24,7 @@ private:
     uint16_t m_scanAngle;
     uint16_t m_scanWidth;
     QVector<QPointF> calculateScanBeam(void) const;
+    int    m_visible;
 };
 
 #endif // SCAN_H

@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>img/water.png</file>
         <file>img/Icon.png</file>
+        <file>snd/quack.wav</file>
     </qresource>
 </RCC>

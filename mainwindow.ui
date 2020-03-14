@@ -158,7 +158,7 @@
               <item>
                <widget class="QSlider" name="shootDist">
                 <property name="maximum">
-                 <number>20</number>
+                 <number>200</number>
                 </property>
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -168,7 +168,7 @@
               <item>
                <widget class="QSpinBox" name="spinBox_7">
                 <property name="maximum">
-                 <number>100</number>
+                 <number>200</number>
                 </property>
                </widget>
               </item>
