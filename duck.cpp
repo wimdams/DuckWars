@@ -34,11 +34,6 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
     (void) option;
     (void) widget;
 
-    //Draw bounding rect in test mode:
-    //p->setPen(Qt::red);
-    //p->setBrush(Qt::NoBrush);
-    //p->drawRect(boundingRect());
-
     //Health bar
     p->setPen(Qt::NoPen);
     p->setBrush(Qt::green);
@@ -122,6 +117,11 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
         p->restore();
     }
 
+    //Draw bounding rect in test mode:
+    p->setPen(Qt::red);
+    p->setBrush(Qt::NoBrush);
+    //p->drawRect(boundingRect());
+    p->drawPath(shape());
 
 //    p->setPen(Qt::darkRed);
 //    p->drawLine(0,0,0,75);
@@ -206,4 +206,13 @@ void Duck::advance(int step)
     //berekenen naar waar we moeten bewegen en de stap zetten
     qreal angleInRad = qDegreesToRadians((qreal)m_angle);
     setPos(mapToParent(qCos(angleInRad)*(m_speed/10), qSin(angleInRad)*(m_speed/10)));
+
+    QList<QGraphicsItem *> items = collidingItems();
+    foreach (QGraphicsItem* whoami, items) {
+        Duck * duck = qgraphicsitem_cast<Duck *>(whoami);
+        if(duck && duck != this){
+            setSpeed(0);
+            QD << duck << this;
+        }
+    }
 }
