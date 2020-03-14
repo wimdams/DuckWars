@@ -13,7 +13,7 @@ Duck::Duck(QColor color, QString playerName)
     m_boundingRect = QRectF(-30,-30,60,70);
     m_scan = new Scan(0,20,this);
     m_scan->setZValue(-1);
-    m_bullet = new Bullet(0,200,m_color);
+    m_bullet = new Bullet(0, MAX_SHOOT_DISTANCE ,m_color);
 }
 
 QRectF Duck::boundingRect() const
@@ -118,10 +118,10 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
     }
 
     //Draw bounding rect in test mode:
-    p->setPen(Qt::red);
-    p->setBrush(Qt::NoBrush);
+    //p->setPen(Qt::red);
+    //p->setBrush(Qt::NoBrush);
     //p->drawRect(boundingRect());
-    p->drawPath(shape());
+    //p->drawPath(shape());
 
 //    p->setPen(Qt::darkRed);
 //    p->drawLine(0,0,0,75);
@@ -183,6 +183,11 @@ void Duck::hit()
     if(health()!=0) {
         setHealth(health()-1);
     }
+}
+
+bool Duck::isDead()
+{
+    return health() == 0;
 }
 
 uint16_t Duck::scan(uint16_t richting, uint16_t hoek)

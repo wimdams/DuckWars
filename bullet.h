@@ -1,15 +1,14 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include "sndfx.h"
 #include <QGraphicsItem>
-#include <QtWidgets>
-#define QD qDebug() << __FILE__ << __LINE__
+#include "config.h"
+#include "sndfx.h"
 
 class Bullet : public QGraphicsItem
 {
 public:
-    Bullet(int16_t angle = 0, int16_t distance = 100, QColor color = Qt::yellow, QGraphicsItem * parent = nullptr);
+    Bullet(int16_t angle = 0, int16_t distance = MAX_SHOOT_DISTANCE, QColor color = Qt::yellow, QGraphicsItem * parent = nullptr);
 
     QRectF boundingRect() const override;
     QPainterPath shape() const override;

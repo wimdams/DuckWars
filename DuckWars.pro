@@ -28,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     bullet.h \
+    config.h \
     duck.h \
     mainwindow.h \
     scan.h \

@@ -2,10 +2,11 @@
 #define DUCK_H
 
 #include <QGraphicsItem>
+#include "config.h"
 #include "scan.h"
 #include "bullet.h"
-#include <QtWidgets>
-#define QD qDebug() << __FILE__ << __LINE__
+
+
 
 class Duck : public QGraphicsItem
 {
@@ -26,6 +27,7 @@ public:
     void setHealth(uint16_t health);
     uint16_t health();
     void hit();
+    bool isDead();
     uint16_t scan(uint16_t richting, uint16_t hoek);
     void shoot(uint16_t angle, uint16_t distance);
 

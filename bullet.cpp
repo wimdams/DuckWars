@@ -77,8 +77,10 @@ void Bullet::advance(int step)
                 Duck * duck = qgraphicsitem_cast<Duck *>(whoami);
                 if(duck){
                     //Je kan uzelf raken!!
-                    duck->hit();
-                    SndFx::playFX(QUACK);
+                    if(!duck->isDead()){
+                        duck->hit();
+                        SndFx::playFX(QUACK);
+                    }
                 }
             }
             update();

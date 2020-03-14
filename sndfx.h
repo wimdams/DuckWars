@@ -2,6 +2,7 @@
 #define SNDFX_H
 
 #include <QSoundEffect>
+#include "config.h"
 
 enum SOUND { QUACK, PLONS };
 

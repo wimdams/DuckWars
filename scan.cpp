@@ -1,12 +1,12 @@
 #include "scan.h"
 #include "duck.h"
 
-Scan::Scan(int16_t angle = 0, int16_t width = 20, QGraphicsItem * parent = nullptr)
+Scan::Scan(int16_t angle, int16_t width, QGraphicsItem * parent)
     : QGraphicsItem(parent)
 {
     m_scanAngle=angle;
     m_scanWidth=width;
-    this->setZValue(-1); //dit lijkt niet te werken -> parent?
+    this->setZValue(-1); //TODO dit lijkt niet te werken -> parent?
     m_visible = 0;
 }
 
@@ -36,27 +36,10 @@ QPainterPath Scan::shape() const
 }
 
 QVector<QPointF> Scan::calculateScanBeam(void) const {
-//    QVector<QPointF> points1, points2;
-//    points1 << QPointF(0.0, 0.0)
-//            << QPointF(100.0, qTan(qDegreesToRadians(m_scanWidth/2.0))*100)
-//            << QPointF(100.0, -(qTan(qDegreesToRadians(m_scanWidth/2.0))*100))
-//    ;
-//    //2D rotation about a point: https://academo.org/demos/rotation-about-point/
-//    qreal angle = qDegreesToRadians((double)m_scanAngle);
-//    qreal translateXvalue = 20 * qCos(angle);
-//    qreal translateYvalue = 20 * qSin(angle);
-//    foreach (QPointF point, points1) {
-//        qreal x = translateXvalue + ((point.x() * qCos(angle)) - (point.y() * qSin(angle)));
-//        qreal y = translateYvalue + ((point.y() * qCos(angle)) - (point.x() * qSin(angle)));
-//        points2 << QPointF(x,y);
-//    }
-
-//    return points2;
-
     QVector<QPointF> points;
     points << QPointF(20.0+0.0, 0.0)
-            << QPointF(20.0+200.0, qTan(qDegreesToRadians(m_scanWidth/2.0))*200)
-            << QPointF(20.0+200.0, -(qTan(qDegreesToRadians(m_scanWidth/2.0))*200))
+            << QPointF(20.0+MAX_SCAN_DISTANCE, qTan(qDegreesToRadians(m_scanWidth/2.0))*MAX_SCAN_DISTANCE)
+            << QPointF(20.0+MAX_SCAN_DISTANCE, -(qTan(qDegreesToRadians(m_scanWidth/2.0))*MAX_SCAN_DISTANCE))
     ;
     return points;
 }
@@ -98,11 +81,13 @@ uint16_t Scan::scan(uint16_t angle, uint16_t width)
     QD << items;
     QPointF pos = mapToScene(this->pos());
     QD << pos << this->pos();
-    uint32_t afstand = 200;
+    uint32_t afstand = MAX_SCAN_DISTANCE;
     foreach (QGraphicsItem* whoami, items) {
         Duck * duck = qgraphicsitem_cast<Duck *>(whoami);
         if(duck){
-
+            if(duck->isDead()){
+                continue;
+            }
             if(duck->pos() != pos){
                 QPointF v = duck->pos() - pos;
                 double trueLength = sqrt(pow(v.x(), 2) + pow(v.y(), 2));

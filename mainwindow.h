@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include "config.h"
 #include "duck.h"
 #include "scan.h"
 #include "bullet.h"

@@ -2,13 +2,12 @@
 #define SCAN_H
 
 #include <QGraphicsItem>
-#include <QtWidgets>
-#define QD qDebug() << __FILE__ << __LINE__
+#include "config.h"
 
 class Scan : public QGraphicsItem
 {
 public:
-    Scan(int16_t angle, int16_t width, QGraphicsItem * parent);
+    Scan(int16_t angle = 0, int16_t width = 20, QGraphicsItem * parent = nullptr);
 
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
