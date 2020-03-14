@@ -1,7 +1,7 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include <QSoundEffect>
+#include "sndfx.h"
 #include <QGraphicsItem>
 #include <QtWidgets>
 #define QD qDebug() << __FILE__ << __LINE__
@@ -27,7 +27,6 @@ private:
     QColor m_bulletColor;
     QPointF m_startPoint;
     bool    m_visible;
-    QSoundEffect m_sndEffect;
 };
 
 #endif // BULLET_H

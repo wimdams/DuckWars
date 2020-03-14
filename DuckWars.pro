@@ -23,13 +23,15 @@ SOURCES += \
     duck.cpp \
     main.cpp \
     mainwindow.cpp \
-    scan.cpp
+    scan.cpp \
+    sndfx.cpp
 
 HEADERS += \
     bullet.h \
     duck.h \
     mainwindow.h \
-    scan.h
+    scan.h \
+    sndfx.h
 
 FORMS += \
     mainwindow.ui

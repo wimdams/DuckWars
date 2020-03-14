@@ -49,41 +49,78 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
     //Player Name
     p->setPen(Qt::white);
     p->drawText(0,25+10,m_playerName);
-
-    //Gradient for body
-    QLinearGradient bodyGrad(QPointF(0, 0), QPointF(30, 30));
-    bodyGrad.setColorAt(0, m_color);
-    bodyGrad.setColorAt(1, m_color.darker(400));
-    //Draw body
-    QBrush b2(bodyGrad);
-    p->setBrush(b2);
-    QPen pen(Qt::black);
-    pen.setWidth(2);
-    p->setPen(pen);
-    p->drawEllipse(-20,-20,40,40);
-    //Draw dot on back of body
-    p->setPen(Qt::NoPen);
-    p->setBrush(QColor(0,0,0,50));
-    p->drawEllipse(-7,-7,14,14);
-    //Draw Head
-    p->save();
-    p->rotate(m_angle);
-    p->translate(24,0);
-    p->setBrush(m_color);
-    p->setPen(pen);
-    p->drawEllipse(-20,-10,20,20);
-    //Draw eyes
-    p->setBrush(Qt::black);
-    p->drawChord(-12, -6, 6, 5, -45 * 16, 135 * 16);
-    p->drawChord(-12, 2, 6, 5, 45 * 16, -135 * 16);
-    //Draw beak
-    p->setBrush(QColor(255,113,0));
-    pen.setWidth(1);
-    p->setPen(pen);
-    p->drawRect(-4,-4,10,8);
-    //p->drawLine(0,0,0,20);
-    //p->drawLine(0,0,20,0);
-    p->restore();
+    if(health() != 0) {
+        //Gradient for body
+        QLinearGradient bodyGrad(QPointF(0, 0), QPointF(30, 30));
+        bodyGrad.setColorAt(0, m_color);
+        bodyGrad.setColorAt(1, m_color.darker(400));
+        //Draw body
+        QBrush b2(bodyGrad);
+        p->setBrush(b2);
+        QPen pen(Qt::black);
+        pen.setWidth(2);
+        p->setPen(pen);
+        p->drawEllipse(-20,-20,40,40);
+        //Draw dot on back of body
+        p->setPen(Qt::NoPen);
+        p->setBrush(QColor(0,0,0,50));
+        p->drawEllipse(-7,-7,14,14);
+        //Draw Head
+        p->save();
+        p->rotate(m_angle);
+        p->translate(24,0);
+        p->setBrush(m_color);
+        p->setPen(pen);
+        p->drawEllipse(-20,-10,20,20);
+        //Draw eyes
+        p->setBrush(Qt::black);
+        p->drawChord(-12, -6, 6, 5, -45 * 16, 135 * 16);
+        p->drawChord(-12, 2, 6, 5, 45 * 16, -135 * 16);
+        //Draw beak
+        p->setBrush(QColor(255,113,0));
+        pen.setWidth(1);
+        p->setPen(pen);
+        p->drawRect(-4,-4,10,8);
+        //p->drawLine(0,0,0,20);
+        //p->drawLine(0,0,20,0);
+        p->restore();
+    }else{
+        //Draw body
+        QColor deadColor = m_color;
+        deadColor.setAlpha(40);
+        p->setBrush(deadColor);
+        QPen pen(QColor(0,0,0,40));
+        pen.setWidth(2);
+        p->setPen(pen);
+        p->drawEllipse(-20,-20,40,40);
+        //Draw dot on back of body
+        p->setPen(Qt::NoPen);
+        p->setBrush(QColor(0,0,0,50));
+        p->drawEllipse(-7,-7,14,14);
+        //Draw Head
+        p->save();
+        p->rotate(m_angle);
+        p->translate(24,0);
+        p->setBrush(deadColor);
+        p->setPen(pen);
+        p->drawEllipse(-20,-10,20,20);
+        //Draw eyes
+        p->drawLine(-7,-7,-3,-3);
+        p->drawLine(-7,-3,-3,-7);
+        p->drawLine(-7,7,-3,3);
+        p->drawLine(-7,3,-3,7);
+        //p->setBrush(Qt::black);
+        //p->drawChord(-12, -6, 6, 5, -45 * 16, 135 * 16);
+        //p->drawChord(-12, 2, 6, 5, 45 * 16, -135 * 16);
+        //Draw beak
+        p->setBrush(QColor(255,113,0,40));
+        pen.setWidth(1);
+        p->setPen(pen);
+        p->drawRect(-4,-4,10,8);
+        //p->drawLine(0,0,0,20);
+        //p->drawLine(0,0,20,0);
+        p->restore();
+    }
 
 
 //    p->setPen(Qt::darkRed);
@@ -128,6 +165,9 @@ void Duck::setHealth(uint16_t health)
 {
     if(health > 10){
         health = 10;
+    }
+    if(health == 0){
+        SndFx::playFX(PLONS);
     }
     m_health = health;
     update();

@@ -43,7 +43,6 @@ void Bullet::shoot(QPointF startPos, uint16_t angle, uint16_t distance)
     m_shootAngle = angle;
     m_shootDistance = distance;
     m_visible = true;
-    //m_sndEffect.play();
 }
 
 QRectF Bullet::boundingRect() const
@@ -60,7 +59,6 @@ QPainterPath Bullet::shape() const
 
 void Bullet::advance(int step)
 {
-    static int j = 0;
     //als step 0 is niets doen
     if (!step)
         return;
@@ -74,12 +72,13 @@ void Bullet::advance(int step)
 
         if(m_shootDistance <= trueLength){
             QList<QGraphicsItem *> items = collidingItems(Qt::IntersectsItemBoundingRect);
-            QD << items;
+            //QD << items;
             foreach (QGraphicsItem* whoami, items) {
                 Duck * duck = qgraphicsitem_cast<Duck *>(whoami);
                 if(duck){
                     //Je kan uzelf raken!!
                     duck->hit();
+                    SndFx::playFX(QUACK);
                 }
             }
             update();

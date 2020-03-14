@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     int i = 0, j = 0;
     foreach (QColor color, m_colors) {
         m_ducks.append(new Duck(color, "Wim"));
-        m_ducks.last()->setPos(i*75,j*75);
+        m_ducks.last()->setPos(i*100,j*100);
         m_pond.addItem(m_ducks.last());
         i++;
         if(i > 5){

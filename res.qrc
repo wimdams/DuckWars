@@ -3,5 +3,6 @@
         <file>img/water.png</file>
         <file>img/Icon.png</file>
         <file>snd/quack.wav</file>
+        <file>snd/plons.wav</file>
     </qresource>
 </RCC>
