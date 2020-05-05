@@ -1,9 +1,9 @@
 #include "duck.h"
 
-Duck::Duck(QColor color, QString playerName)
+Duck::Duck(QColor color)
 {
     m_color = color;
-    m_playerName = playerName;
+    m_playerName = "";
     m_health = 10;
     m_angle = 0;
     m_speed = 0;
@@ -43,7 +43,7 @@ void Duck::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *w
 
     //Player Name
     p->setPen(Qt::white);
-    p->drawText(0,25+10,m_playerName);
+    p->drawText(-27,25+10,m_playerName);
     if(health() != 0) {
         //Gradient for body
         QLinearGradient bodyGrad(QPointF(0, 0), QPointF(30, 30));
@@ -203,6 +203,17 @@ void Duck::shoot(uint16_t angle, uint16_t distance)
     m_bullet->shoot(scenePos(), angle, distance);
 }
 
+QString Duck::playerName()
+{
+    return m_playerName;
+}
+
+void Duck::setPlayerName(QString name)
+{
+    m_playerName = name;
+    update();
+}
+
 void Duck::advance(int step)
 {
     //als step 0 is niets doen
@@ -215,9 +226,9 @@ void Duck::advance(int step)
     QList<QGraphicsItem *> items = collidingItems();
     foreach (QGraphicsItem* whoami, items) {
         Duck * duck = qgraphicsitem_cast<Duck *>(whoami);
-        if(duck && duck != this){
+        if(duck && duck != this && !duck->isDead()){
             setSpeed(0);
-            QD << duck << this;
+            //QD << duck << this;
         }
     }
 }

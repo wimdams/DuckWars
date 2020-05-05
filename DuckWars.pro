@@ -1,7 +1,10 @@
-QT       += core gui
+QT += core gui
 
 # for sound effects:
 QT += multimedia
+
+# for TCP/IP:
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

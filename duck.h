@@ -11,7 +11,7 @@
 class Duck : public QGraphicsItem
 {
 public:
-    Duck(QColor color, QString playerName);
+    Duck(QColor color);
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -30,6 +30,9 @@ public:
     bool isDead();
     uint16_t scan(uint16_t richting, uint16_t hoek);
     void shoot(uint16_t angle, uint16_t distance);
+    QString playerName();
+    void setPlayerName(QString name);
+
 
 protected:
     void advance(int step) override;
